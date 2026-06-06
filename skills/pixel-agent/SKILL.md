@@ -21,12 +21,12 @@ Run the loop below. Expect 3–4 critique passes per sprite — that's normal.
 
 ## Running the engine
 
-The engine is bundled with this skill (a Python package `pixelagent`, needs Pillow). From the plugin
-root (the folder containing `pixelagent/`):
+The engine is bundled with this plugin (a Python package `pixelagent`, needs Pillow). Render a
+drawing program with the bundled launcher — runs from anywhere, no PYTHONPATH needed:
 
 ```bash
-pip install pillow            # once, if missing
-PYTHONPATH=<plugin_root> python3 -m pixelagent.studio <workdir> <program.txt> \
+pip install pillow   # once, if missing
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/pixel.py" <workdir> <program.txt> \
   --w 32 --h 32 --scale 16 --every 4 --reset
 ```
 
@@ -69,9 +69,13 @@ copy SX SY W H DX DY
 ## Animation
 
 Frames are just canvases — copy the last, nudge what moves, re-render. Build a small Python script
-(see `out/build_anim.py`, `out/build_dragged.py` for worked examples) that:
+that imports the library (put the plugin root on the path with
+`sys.path.insert(0, os.environ["CLAUDE_PLUGIN_ROOT"])`) and:
 - derives frames by editing only the moving part (e.g. eye interior for a blink) + `mirror_h`;
 - exports `export_gif`, `export_spritesheet`, and a `contact_sheet` to review.
+
+Worked examples: `${CLAUDE_PLUGIN_ROOT}/out/build_anim.py` (bob + blink) and
+`${CLAUDE_PLUGIN_ROOT}/out/build_dragged.py` (rigid head + swaying body).
 
 **Critical rule:** never shear/rotate across a rigid part — it SPLITS it (e.g. a sway that tears the
 head). Layer it: rigid part on top, moving part sheared/rotated about the join, composited.
