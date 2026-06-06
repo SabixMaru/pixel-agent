@@ -1,0 +1,25 @@
+# Dragged cat — BODY + LEGS layer only (swings beneath the rigid head)
+clear 0
+color #3a2417 outline      # 1
+color #f2a25c fur          # 2
+color #d07a38 furshadow    # 3
+color #ffd29a furlight     # 4
+color #f4a6ad pink         # 5
+color #fbf3e8 white        # 6
+color #2e2018 pupil        # 7
+color #1c130d frame        # 8
+color #bfe6f0 shine        # 9
+color #00000030 shadow     # 10
+
+# body (hangs from the neck; its top tucks under the chin)
+ellipse 10 24 21 30 2 fill
+ellipse 10 24 21 30 1
+line 12 29 15 29 3
+
+# dangling back legs + paw beans
+rect 11 30 13 34 2 fill
+rect 11 30 13 34 1
+pixel 12 34 5
+rect 11 30 13 31 2 fill
+
+mirror_h

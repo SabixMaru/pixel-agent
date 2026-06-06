@@ -1,0 +1,13 @@
+{
+  "name": "pixel-agent",
+  "description": "Tools for AI-driven pixel art & animation",
+  "owner": { "name": "SabixMaru" },
+  "plugins": [
+    {
+      "name": "pixel-agent",
+      "source": ".",
+      "description": "Make pixel art & animations by sight, with full per-pixel control.",
+      "version": "0.1.0"
+    }
+  ]
+}

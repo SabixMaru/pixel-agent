@@ -1,0 +1,65 @@
+# Chunky sitting YELLOW cat (Pusheen-style pose, original art) — 64x64
+clear 0
+
+color #36280f outline      # 1
+color #f6cf57 fur          # 2
+color #e0a23e furshadow    # 3
+color #ffe89a furlight     # 4
+color #f79ac0 blush        # 5
+color #2e2410 eyedark      # 6
+color #c5862f deepshadow   # 7
+color #fffbe9 shine        # 8
+color #00000030 shadow     # 9
+
+# ===== FUR FILL (silhouette) =====
+# body blob
+ellipse 12 13 51 51 2 fill
+rect 16 30 47 49 2 fill
+
+# left ear (squat triangle)
+line 23 10 24 10 2
+line 22 11 25 11 2
+line 21 12 26 12 2
+line 20 13 27 13 2
+line 19 14 28 14 2
+
+# left feet (outer + front)
+rect 17 48 23 55 2 fill
+rect 26 48 30 55 2 fill
+
+# ===== FACE (left half; mirror completes) =====
+ellipse 24 29 27 33 6 fill
+pixel 25 30 8
+rect 18 33 21 35 5 fill
+pixel 31 33 6
+pixel 30 35 6
+
+mirror_h
+
+# ===== TAIL (right side, curling up and back) =====
+ellipse 46 43 53 50 2 fill
+ellipse 50 45 56 51 2 fill
+ellipse 54 42 60 48 2 fill
+ellipse 57 38 62 44 2 fill
+ellipse 55 34 61 40 2 fill
+ellipse 51 34 57 40 2 fill
+
+# ===== auto outline the whole shape =====
+outline 1
+
+# ===== SHADING (interior) =====
+# top highlight (thin arc hugging the head top)
+line 25 15 38 15 4
+line 22 16 26 16 4
+line 37 16 41 16 4
+# belly / bottom shadow
+line 20 45 43 45 3
+line 23 47 40 47 3
+# side form shadow
+line 15 34 17 43 3
+line 46 34 48 43 3
+# tabby stripes (lower flanks, away from face)
+line 16 33 18 37 7
+line 18 39 20 43 7
+line 47 33 45 37 7
+line 45 39 43 43 7

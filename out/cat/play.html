@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>grab the cat</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; overflow:hidden; background:#eae6df;
+    font-family:-apple-system,system-ui,sans-serif; user-select:none; -webkit-user-select:none; touch-action:none; }
+  body { background:linear-gradient(#f3efe8,#e2ddd2); }
+  #floor { position:fixed; left:0; right:0; bottom:0; height:64px;
+    background:linear-gradient(#d8cfbf,#c3b8a2); border-top:2px solid #b9ad97; opacity:.6; }
+  #hint { position:fixed; top:18px; left:0; right:0; text-align:center; color:#8a8073; font-size:15px; letter-spacing:.2px; }
+  #cat { position:fixed; width:176px; height:160px; left:0; top:0; will-change:transform; cursor:grab; }
+  #cat img { position:absolute; image-rendering:pixelated; image-rendering:crisp-edges; }
+  #body, #head { width:176px; left:0; top:0; }
+  #body { transform-origin:50% 65%; }            /* swing about the neck */
+  #idle { width:128px; left:24px; bottom:0; }     /* sits on the floor   */
+  .grabbing, .grabbing #cat { cursor:grabbing; }
+</style>
+</head>
+<body>
+  <div id="floor"></div>
+  <div id="hint">grab the cat and swing it around — let go to drop it 🐾</div>
+  <div id="cat">
+    <img id="body" src="body_still.png" alt="">
+    <img id="head" src="head_still.png" alt="">
+    <img id="idle" src="idle.gif" alt="">
+  </div>
+
+<script>
+const cat  = document.getElementById('cat');
+const body = document.getElementById('body');
+const head = document.getElementById('head');
+const idle = document.getElementById('idle');
+const CW = 176, CH = 160;
+
+let state = 'idle';
+let x = innerWidth/2 - CW/2, y = 0;          // container top-left
+let px = innerWidth/2, py = innerHeight/2;   // pointer
+let lastPx = px, vx = 0, vy = 0;
+let angle = 0, angVel = 0;
+
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const floorTop = () => innerHeight - CH;     // container rests so feet meet the floor
+
+function mode(m){
+  state = m;
+  const held = (m === 'held' || m === 'falling');
+  body.style.display = held ? 'block' : 'none';
+  head.style.display = held ? 'block' : 'none';
+  idle.style.display = held ? 'none'  : 'block';
+  document.body.classList.toggle('grabbing', m === 'held');
+}
+
+function pt(e){ const t = e.touches ? e.touches[0] : e; return {x:t.clientX, y:t.clientY}; }
+
+addEventListener('pointerdown', e => {
+  const p = pt(e);
+  const cx = x + CW/2, cy = y + CH/2;          // grab only if you click near the cat
+  if (Math.hypot(p.x - cx, p.y - cy) < 130){
+    px = lastPx = p.x; py = p.y;
+    mode('held');
+  }
+});
+addEventListener('pointermove', e => { const p = pt(e); px = p.x; py = p.y; });
+addEventListener('pointerup',   () => { if (state === 'held') mode('falling'); });
+
+// initial resting position
+y = floorTop();
+
+function tick(){
+  const raw = px - lastPx;
+  vx = vx*0.7 + raw*0.3;       // smoothed pointer velocity
+  lastPx = px;
+
+  if (state === 'held'){
+    x = px - CW*0.5;           // hold by the scruff (top-centre)
+    y = py - CH*0.10;
+  } else if (state === 'falling'){
+    vy += 1.4;                 // gravity
+    y += vy;
+    if (y >= floorTop()){
+      y = floorTop();
+      if (Math.abs(vy) > 3) vy = -vy*0.35;   // bounce
+      else { vy = 0; mode('idle'); }
+    }
+  }
+
+  // body swing: damped spring toward a velocity-driven target angle
+  const target = (state === 'held') ? clamp(-vx*0.05, -0.9, 0.9) : 0;
+  const STIFF = 90, DAMP = 8, dt = 1/60;
+  angVel += (STIFF*(target - angle) - DAMP*angVel) * dt;
+  angle  += angVel * dt;
+  if (state === 'idle'){ angle = 0; angVel = 0; }
+
+  cat.style.transform  = `translate(${x}px, ${y}px)`;
+  body.style.transform = `rotate(${angle}rad)`;
+  requestAnimationFrame(tick);
+}
+mode('idle');
+tick();
+</script>
+</body>
+</html>

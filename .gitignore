@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# transient per-canvas state (keep the example sprites/gifs, drop the scratch state)
+out/**/canvas.json

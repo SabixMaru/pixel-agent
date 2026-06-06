@@ -1,0 +1,10 @@
+{
+  "name": "pixel-agent",
+  "description": "Make pixel art & animations by sight: Claude drives a draw → render → look → critique loop with full per-pixel control.",
+  "version": "0.1.0",
+  "author": { "name": "SabixMaru" },
+  "homepage": "https://github.com/SabixMaru/pixel-agent",
+  "repository": "https://github.com/SabixMaru/pixel-agent",
+  "license": "MIT",
+  "keywords": ["pixel-art", "sprites", "animation", "gif", "generative", "agentic"]
+}
